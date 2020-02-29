@@ -1,29 +1,39 @@
 <?php
 
- session_start();
-   // connect to the database
-   $db = mysqli_connect('localhost', 'root', '', 'newtech');
+	$check = new Main;
+	if(isset($_POST['username'],$_POST['password'])){
+		@$username = $_POST['username'];
+		@$password = $_POST['password'];
 
-   if($_SERVER["REQUEST_METHOD"] == "POST") {
-      // username and password sent from form
+		if(empty($username) or empty($password)){
+			echo "<div class='error'>Enter a Username and Password</div>";
+		} else{
+			//$password = md5($password);
+  			$check->login($username,$password);
+			}
+		}
 
-      $myusername = mysqli_real_escape_string($db,$_POST['username']);
-      $mypassword = mysqli_real_escape_string($db,$_POST['password']);
 
-      $sql = "SELECT id FROM login WHERE username = '$myusername' and password = '$mypassword'";
-      $result = mysqli_query($db,$sql);
-      $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-      $active = $row['active'];
-
-      $count = mysqli_num_rows($result);
-
-      // If result matched $myusername and $mypassword, table row must be 1 row
-
-      if($count == 1) {
-        $_SESSION['username'] = $myusername;
-         header("location: admin.php");
-      }else {
-         header("location: index.html");
-      }
-   }
 ?>
+
+<div class="right">
+		<form action="" method="post"/>
+			<div class="right-email">
+				<ul>
+					<li class="white">Username</li>
+					<li><input type="text" name="username"/></li>
+				</ul>
+			</div>
+			<div class="right-pass">
+				<ul>
+					<li><span class="white">Password</span></li>
+					<li><input type="Password" name="password"/></li>
+					<li><span>Forgot your Password?</span></li>
+				</ul>
+			</div>
+			<div class="right-btn">
+				<input class="btn" type="submit" value="Login" />
+			</div>
+			</form>
+
+</div>
